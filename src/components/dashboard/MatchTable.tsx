@@ -7,16 +7,27 @@ import { formatScore, gameTitle } from '../../utils/football';
 import { BadgePair } from './ClubBadge';
 import { MatchListState } from './MatchListState';
 import { MobileMatchCard } from './MobileMatchCard';
-
 export type MatchListViewState = 'ready' | 'loading' | 'error';
-
 interface MatchTableProps {
   state?: MatchListViewState;
   onRetry?: () => void;
 }
-
-export function MatchTable({ state = 'ready', onRetry }: MatchTableProps) {
-  const { view, statusFilter, search, leagueFilter, dateFilter, followed, activeId, openMatch, toggleFollow, resetFilters } = useDashboard();
+export function MatchTable({
+  state = 'ready',
+  onRetry
+}: MatchTableProps) {
+  const {
+    view,
+    statusFilter,
+    search,
+    leagueFilter,
+    dateFilter,
+    followed,
+    activeId,
+    openMatch,
+    toggleFollow,
+    resetFilters
+  } = useDashboard();
   const list = filterMatches({
     games,
     favoritesOnly: view === 'favorites',
@@ -26,26 +37,13 @@ export function MatchTable({ state = 'ready', onRetry }: MatchTableProps) {
     league: leagueFilter,
     date: dateFilter
   });
-
   if (state === 'loading' || state === 'error') {
     return <MatchListState state={state} onReset={resetFilters} onRetry={onRetry ?? resetFilters} />;
   }
-
   if (!list.length) return <MatchListState state="empty" onReset={resetFilters} />;
-
-  return (
-    <div>
+  return <div>
       <div className="space-y-3 px-4 py-4 md:hidden">
-        {list.map((game) =>
-        <MobileMatchCard
-          key={game.id}
-          game={game}
-          active={activeId === game.id}
-          followed={followed.has(game.id)}
-          onOpen={() => openMatch(game.id)}
-          onToggleFollow={() => toggleFollow(game.id)} />
-
-        )}
+        {list.map((game) => <MobileMatchCard key={game.id} game={game} active={activeId === game.id} followed={followed.has(game.id)} onOpen={() => openMatch(game.id)} onToggleFollow={() => toggleFollow(game.id)} />)}
       </div>
 
       <div className="hidden overflow-x-auto px-6 md:block">
@@ -62,10 +60,9 @@ export function MatchTable({ state = 'ready', onRetry }: MatchTableProps) {
           </thead>
           <tbody>
             {list.map((game, index) => {
-              const isActive = activeId === game.id;
-              const isFollowed = followed.has(game.id);
-              return (
-                <tr key={game.id} className={`h-[74px] border-t text-[#a5afa8] transition-colors hover:bg-white/[0.035] ${isActive ? 'border-white/[0.12] bg-white/[0.05]' : 'border-white/[0.055]'}`}>
+            const isActive = activeId === game.id;
+            const isFollowed = followed.has(game.id);
+            return <tr key={game.id} className={`h-[74px] border-t text-[#a5afa8] transition-colors hover:bg-white/[0.035] ${isActive ? 'border-white/[0.12] bg-white/[0.05]' : 'border-white/[0.055]'}`}>
                   <td className="py-3 text-xs text-[#737e77]">{String(index + 1).padStart(2, '0')}</td>
                   <td className="max-w-[380px] py-3 pr-6">
                     <button type="button" onClick={() => openMatch(game.id)} aria-label={`Open ${gameTitle(game)}`} className="flex w-full min-w-0 items-center gap-3 text-left">
@@ -91,12 +88,10 @@ export function MatchTable({ state = 'ready', onRetry }: MatchTableProps) {
                       <Heart size={16} fill={isFollowed ? 'currentColor' : 'none'} />
                     </button>
                   </td>
-                </tr>);
-
-            })}
+                </tr>;
+          })}
           </tbody>
         </table>
       </div>
-    </div>);
-
+    </div>;
 }

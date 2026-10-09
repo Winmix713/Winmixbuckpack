@@ -1,17 +1,17 @@
 import React from 'react';
-
 interface AreaChartProps {
   label?: string;
   home?: number;
   away?: number;
 }
-
 const HOME_PATH = 'M0 74C35 65 46 22 83 30S135 72 166 46S218 10 250 37S301 72 332 36S391 19 430 39';
 const AWAY_PATH = 'M0 42C35 36 50 61 83 68S133 14 166 26S215 71 250 61S295 11 332 22S390 75 430 52';
-
-export function AreaChart({ label = 'Ball possession', home = 58, away = 42 }: AreaChartProps) {
-  return (
-    <div className="w-full" role="img" aria-label={`${label}: home ${home}%, away ${away}%`}>
+export function AreaChart({
+  label = 'Ball possession',
+  home = 58,
+  away = 42
+}: AreaChartProps) {
+  return <div className="w-full" role="img" aria-label={`${label}: home ${home}%, away ${away}%`}>
       <svg viewBox="0 0 430 100" preserveAspectRatio="none" className="h-24 w-full">
         <path d={`${HOME_PATH}V100H0Z`} fill="#c8ff3618" />
         <path d={HOME_PATH} stroke="#c8ff36" fill="none" strokeWidth={2} />
@@ -27,6 +27,5 @@ export function AreaChart({ label = 'Ball possession', home = 58, away = 42 }: A
         <span>75′</span>
         <span>90′</span>
       </div>
-    </div>);
-
+    </div>;
 }

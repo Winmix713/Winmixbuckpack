@@ -7,10 +7,10 @@ import { ChampionshipsView } from './views/ChampionshipsView';
 import { LineupsView } from './views/LineupsView';
 import { ProfileView } from './views/ProfileView';
 import { SettingsView } from './views/SettingsView';
-
 export function AuxPanel() {
-  const { view } = useDashboard();
-
+  const {
+    view
+  } = useDashboard();
   switch (view) {
     case 'statistics':
       return <StatisticsView />;

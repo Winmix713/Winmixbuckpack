@@ -4,7 +4,6 @@ import { games } from '../data/games';
 import type { DetailTab, StatusFilter, TeamSide, ViewKey } from '../types/football';
 import { gameTitle } from '../utils/football';
 import { clubs } from '../data/clubs';
-
 interface DashboardContextValue {
   view: ViewKey;
   setView: (v: ViewKey) => void;
@@ -54,10 +53,12 @@ interface DashboardContextValue {
   closeTour: () => void;
   advanceTour: () => void;
 }
-
 const DashboardContext = createContext<DashboardContextValue | null>(null);
+export function DashboardProvider({
+  children
 
-export function DashboardProvider({ children }: {children: React.ReactNode;}) {
+
+}: {children: React.ReactNode;}) {
   const [view, setView] = useState<ViewKey>('matches');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [search, setSearch] = useState('');
@@ -78,65 +79,52 @@ export function DashboardProvider({ children }: {children: React.ReactNode;}) {
   const [matchDialogOpen, setMatchDialogOpen] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
   const [tourStep, setTourStep] = useState(0);
-
   const toggleFollow = useCallback((id: number) => {
     setFollowed((prev) => {
       const next = new Set(prev);
       const wasFollowed = next.has(id);
-      if (wasFollowed) next.delete(id);else
-      next.add(id);
+      if (wasFollowed) next.delete(id);else next.add(id);
       toast(wasFollowed ? 'Match removed from your watchlist' : 'Match added to your watchlist', {
         description: gameTitle(games[id])
       });
       return next;
     });
   }, []);
-
   const toggleDimTheme = useCallback(() => setDimTheme((v) => !v), []);
   const toggleRtl = useCallback(() => setRtl((v) => !v), []);
-
   const openMatch = useCallback((id: number) => {
     setActiveId(id);
     setDetailTab('summary');
     setTeamSide('home');
     setMatchDialogOpen(true);
   }, []);
-
   const closeMatchDialog = useCallback(() => setMatchDialogOpen(false), []);
-
   const resetFilters = useCallback(() => {
     setStatusFilter('all');
     setSearch('');
     setLeagueFilter('all');
     setDateFilter('');
   }, []);
-
   const resetDisplay = useCallback(() => {
     setDimTheme(false);
     setRtl(false);
     setFontScale(100);
   }, []);
-
   const nextMatch = useCallback(() => {
     setActiveId((prev) => (prev + 1) % games.length);
   }, []);
-
   const prevMatch = useCallback(() => {
     setActiveId((prev) => (prev - 1 + games.length) % games.length);
   }, []);
-
   const selectClub = useCallback((id: number) => {
     setClubId(id);
     setView('clubs');
   }, []);
-
   const openTour = useCallback(() => {
     setTourStep(0);
     setTourOpen(true);
   }, []);
-
   const closeTour = useCallback(() => setTourOpen(false), []);
-
   const advanceTour = useCallback(() => {
     setTourStep((prev) => {
       if (prev === 2) {
@@ -148,72 +136,60 @@ export function DashboardProvider({ children }: {children: React.ReactNode;}) {
       return prev + 1;
     });
   }, [resetFilters]);
-
-  const value = useMemo<DashboardContextValue>(
-    () => ({
-      view,
-      setView,
-      statusFilter,
-      setStatusFilter,
-      search,
-      setSearch,
-      leagueFilter,
-      setLeagueFilter,
-      dateFilter,
-      setDateFilter,
-      activeId,
-      setActiveId,
-      clubId,
-      setClubId,
-      half,
-      setHalf,
-      teamSide,
-      setTeamSide,
-      group,
-      setGroup,
-      round,
-      setRound,
-      detailTab,
-      setDetailTab,
-      followed,
-      toggleFollow,
-      dimTheme,
-      toggleDimTheme,
-      rtl,
-      toggleRtl,
-      fontScale,
-      setFontScale,
-      filterOpen,
-      setFilterOpen,
-      matchDialogOpen,
-      openMatch,
-      closeMatchDialog,
-      resetFilters,
-      resetDisplay,
-      nextMatch,
-      prevMatch,
-      selectClub,
-      tourOpen,
-      tourStep,
-      openTour,
-      closeTour,
-      advanceTour
-    }),
-    [
-    view, statusFilter, search, leagueFilter, dateFilter, activeId, clubId, half, teamSide,
-    group, round, detailTab, followed, dimTheme, rtl, fontScale, filterOpen, matchDialogOpen,
-    toggleFollow, toggleDimTheme, toggleRtl, openMatch, closeMatchDialog, resetFilters, resetDisplay, nextMatch, prevMatch, selectClub,
-    tourOpen, tourStep, openTour, closeTour, advanceTour]
-
-  );
-
+  const value = useMemo<DashboardContextValue>(() => ({
+    view,
+    setView,
+    statusFilter,
+    setStatusFilter,
+    search,
+    setSearch,
+    leagueFilter,
+    setLeagueFilter,
+    dateFilter,
+    setDateFilter,
+    activeId,
+    setActiveId,
+    clubId,
+    setClubId,
+    half,
+    setHalf,
+    teamSide,
+    setTeamSide,
+    group,
+    setGroup,
+    round,
+    setRound,
+    detailTab,
+    setDetailTab,
+    followed,
+    toggleFollow,
+    dimTheme,
+    toggleDimTheme,
+    rtl,
+    toggleRtl,
+    fontScale,
+    setFontScale,
+    filterOpen,
+    setFilterOpen,
+    matchDialogOpen,
+    openMatch,
+    closeMatchDialog,
+    resetFilters,
+    resetDisplay,
+    nextMatch,
+    prevMatch,
+    selectClub,
+    tourOpen,
+    tourStep,
+    openTour,
+    closeTour,
+    advanceTour
+  }), [view, statusFilter, search, leagueFilter, dateFilter, activeId, clubId, half, teamSide, group, round, detailTab, followed, dimTheme, rtl, fontScale, filterOpen, matchDialogOpen, toggleFollow, toggleDimTheme, toggleRtl, openMatch, closeMatchDialog, resetFilters, resetDisplay, nextMatch, prevMatch, selectClub, tourOpen, tourStep, openTour, closeTour, advanceTour]);
   return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
 }
-
 export function useDashboard() {
   const ctx = useContext(DashboardContext);
   if (!ctx) throw new Error('useDashboard must be used within DashboardProvider');
   return ctx;
 }
-
 export { clubs, games };

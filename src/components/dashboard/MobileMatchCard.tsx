@@ -4,7 +4,6 @@ import type { Game } from '../../types/football';
 import { clubs } from '../../data/clubs';
 import { formatScore, gameTitle } from '../../utils/football';
 import { BadgePair } from './ClubBadge';
-
 interface MobileMatchCardProps {
   game: Game;
   active: boolean;
@@ -12,10 +11,14 @@ interface MobileMatchCardProps {
   onOpen: () => void;
   onToggleFollow: () => void;
 }
-
-export function MobileMatchCard({ game, active, followed, onOpen, onToggleFollow }: MobileMatchCardProps) {
-  return (
-    <article className={`rounded-2xl border p-4 transition-colors ${active ? 'border-white/[0.18] bg-white/[0.055]' : 'border-white/[0.08] bg-white/[0.025]'}`}>
+export function MobileMatchCard({
+  game,
+  active,
+  followed,
+  onOpen,
+  onToggleFollow
+}: MobileMatchCardProps) {
+  return <article className={`rounded-2xl border p-4 transition-colors ${active ? 'border-white/[0.18] bg-white/[0.055]' : 'border-white/[0.08] bg-white/[0.025]'}`}>
       <div className="flex items-start gap-3">
         <button type="button" onClick={onOpen} aria-label={`Open ${gameTitle(game)}`} className="flex min-w-0 flex-1 items-start gap-3 text-left">
           <BadgePair homeId={game.home} awayId={game.away} />
@@ -26,12 +29,7 @@ export function MobileMatchCard({ game, active, followed, onOpen, onToggleFollow
             <span className="mt-1 block text-xs text-[#98a39c]">{game.league}</span>
           </span>
         </button>
-        <button
-          type="button"
-          onClick={onToggleFollow}
-          aria-pressed={followed}
-          aria-label={`${followed ? 'Remove' : 'Add'} ${gameTitle(game)} ${followed ? 'from' : 'to'} watchlist`}
-          className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border transition ${followed ? 'border-wm-lime/25 bg-wm-lime/[0.08] text-wm-lime' : 'border-white/[0.09] text-[#7f8b83] hover:bg-white/[0.05] hover:text-wm-text'}`}>
+        <button type="button" onClick={onToggleFollow} aria-pressed={followed} aria-label={`${followed ? 'Remove' : 'Add'} ${gameTitle(game)} ${followed ? 'from' : 'to'} watchlist`} className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border transition ${followed ? 'border-wm-lime/25 bg-wm-lime/[0.08] text-wm-lime' : 'border-white/[0.09] text-[#7f8b83] hover:bg-white/[0.05] hover:text-wm-text'}`}>
           
           <Heart size={17} fill={followed ? 'currentColor' : 'none'} />
         </button>
@@ -47,6 +45,5 @@ export function MobileMatchCard({ game, active, followed, onOpen, onToggleFollow
         </span>
         <strong className="text-xl font-semibold tracking-[-1px] text-[#f2f5f2]">{formatScore(game)}</strong>
       </button>
-    </article>);
-
+    </article>;
 }

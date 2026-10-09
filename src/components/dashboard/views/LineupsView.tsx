@@ -8,26 +8,23 @@ import { DataCard } from './DataCard';
 import { LineupPitch } from '../../charts/LineupPitch';
 import { EventLine } from '../../charts/EventLine';
 import { EventList } from '../../charts/EventList';
-
 export function LineupsView() {
-  const { activeId, setActiveId, teamSide, setTeamSide } = useDashboard();
+  const {
+    activeId,
+    setActiveId,
+    teamSide,
+    setTeamSide
+  } = useDashboard();
   const game = games[activeId];
   const teamId = teamSide === 'home' ? game.home : game.away;
-
-  return (
-    <div className="flex flex-col gap-5 px-6 pb-8">
+  return <div className="flex flex-col gap-5 px-6 pb-8">
       <label className="flex items-center gap-2 text-[12px] text-wm-muted">
         Match
-        <select
-          value={activeId}
-          onChange={(e) => setActiveId(Number(e.target.value))}
-          className="rounded-md border border-white/[0.11] bg-[#111514] px-2.5 py-1.5 text-[12px] text-[#dce4df]">
+        <select value={activeId} onChange={(e) => setActiveId(Number(e.target.value))} className="rounded-md border border-white/[0.11] bg-[#111514] px-2.5 py-1.5 text-[12px] text-[#dce4df]">
           
-          {games.map((g) =>
-          <option key={g.id} value={g.id}>
+          {games.map((g) => <option key={g.id} value={g.id}>
               {gameTitle(g)}
-            </option>
-          )}
+            </option>)}
         </select>
       </label>
 
@@ -38,10 +35,7 @@ export function LineupsView() {
           <small className="text-xs text-wm-muted-2">{clubs[game.home].location}</small>
         </div>
         <div className="flex flex-col items-center gap-1.5 text-center">
-          <span
-            className={`rounded-md border px-2 py-1 text-[10px] ${
-            game.status === 'Live' ? 'border-wm-lime/[0.18] bg-wm-lime/[0.075] text-[#bff45e]' : 'border-white/10 bg-white/[0.035] text-[#9aa49d]'}`
-            }>
+          <span className={`rounded-md border px-2 py-1 text-[10px] ${game.status === 'Live' ? 'border-wm-lime/[0.18] bg-wm-lime/[0.075] text-[#bff45e]' : 'border-white/10 bg-white/[0.035] text-[#9aa49d]'}`}>
             
             {game.status === 'Live' ? `LIVE DEMO · ${game.minute}′` : 'FULL TIME'}
           </span>
@@ -59,13 +53,7 @@ export function LineupsView() {
         <EventLine game={game} />
       </div>
 
-      <ChipTabs
-        value={teamSide}
-        onChange={(v) => setTeamSide(v as 'home' | 'away')}
-        items={[
-        ['home', clubs[game.home].name],
-        ['away', clubs[game.away].name]]
-        } />
+      <ChipTabs value={teamSide} onChange={(v) => setTeamSide(v as 'home' | 'away')} items={[['home', clubs[game.home].name], ['away', clubs[game.away].name]]} />
       
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -77,6 +65,5 @@ export function LineupsView() {
           <p className="mt-3 text-xs text-wm-muted-2">Select a timeline marker to inspect a goal.</p>
         </DataCard>
       </div>
-    </div>);
-
+    </div>;
 }

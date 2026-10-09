@@ -2,17 +2,18 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useDashboard } from '../contexts/DashboardContext';
 import type { ViewKey } from '../types/football';
-
 export function Footer() {
-  const { setView, openTour } = useDashboard();
-
+  const {
+    setView,
+    openTour
+  } = useDashboard();
   const goTo = (view: ViewKey) => {
     setView(view);
-    window.setTimeout(() => document.getElementById('library')?.scrollIntoView({ behavior: 'smooth' }), 0);
+    window.setTimeout(() => document.getElementById('library')?.scrollIntoView({
+      behavior: 'smooth'
+    }), 0);
   };
-
-  return (
-    <footer className="border-t border-white/[0.09] bg-[#070908]">
+  return <footer className="border-t border-white/[0.09] bg-[#070908]">
       <div className="mx-auto grid max-w-[1500px] gap-10 px-6 py-12 sm:px-10 md:grid-cols-[1.4fr_1fr_1fr] lg:py-16">
         <div className="max-w-md">
           <a href="#main" className="inline-flex min-h-11 items-center gap-3 text-xl font-semibold tracking-[-1px] text-wm-text">
@@ -41,6 +42,5 @@ export function Footer() {
         <span>© 2026 Winmix</span>
         <span>Analytics only · No real-money betting</span>
       </div>
-    </footer>);
-
+    </footer>;
 }

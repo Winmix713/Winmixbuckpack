@@ -1,13 +1,15 @@
 import React from 'react';
 import { useDashboard } from '../../../contexts/DashboardContext';
 import { DataCard } from './DataCard';
-
 export function ProfileView() {
-  const { followed, setView } = useDashboard();
-
-  return (
-    <div className="flex flex-col gap-5 px-6 pb-8">
-      <article className="rounded-xl border border-white/[0.08] p-5" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012))' }}>
+  const {
+    followed,
+    setView
+  } = useDashboard();
+  return <div className="flex flex-col gap-5 px-6 pb-8">
+      <article className="rounded-xl border border-white/[0.08] p-5" style={{
+      background: 'linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012))'
+    }}>
         <span className="grid h-14 w-14 place-items-center rounded-full border border-wm-lime/30 bg-white/10 text-lg font-semibold text-wm-text">
           WA
         </span>
@@ -32,9 +34,7 @@ export function ProfileView() {
             </strong>
           </div>
         </div>
-        <button
-          onClick={() => setView('favorites')}
-          className="mt-5 rounded-lg border border-white/10 bg-white/[0.035] px-4 py-2 text-sm text-wm-text hover:border-white/20">
+        <button onClick={() => setView('favorites')} className="mt-5 rounded-lg border border-white/10 bg-white/[0.035] px-4 py-2 text-sm text-wm-text hover:border-white/20">
           
           Open your watchlist ↗
         </button>
@@ -44,6 +44,5 @@ export function ProfileView() {
           Keep selected matches close with the heart button. Your demo watchlist lasts for this page session.
         </p>
       </DataCard>
-    </div>);
-
+    </div>;
 }

@@ -11,15 +11,12 @@ export interface Club {
   ga: number;
   pts: number;
 }
-
 export type MatchStatus = 'Live' | 'Finished';
-
 export interface GoalEvent {
   minute: number;
   side: 'home' | 'away';
   player: string;
 }
-
 export interface Game {
   id: number;
   home: number;
@@ -35,20 +32,7 @@ export interface Game {
   events: GoalEvent[];
   possession: number;
 }
-
-export type ViewKey =
-'matches' |
-'favorites' |
-'clubs' |
-'championships' |
-'standings' |
-'statistics' |
-'lineups' |
-'profile' |
-'settings';
-
+export type ViewKey = 'matches' | 'favorites' | 'clubs' | 'championships' | 'standings' | 'statistics' | 'lineups' | 'profile' | 'settings';
 export type StatusFilter = 'all' | 'Live' | 'Finished';
-
 export type DetailTab = 'summary' | 'lineups' | 'goals' | 'statistics';
-
 export type TeamSide = 'home' | 'away';

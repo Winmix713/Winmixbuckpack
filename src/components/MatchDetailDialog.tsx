@@ -14,12 +14,18 @@ import { AreaChart } from './charts/AreaChart';
 import { LineupPitch } from './charts/LineupPitch';
 import { DataCard } from './dashboard/views/DataCard';
 import type { DetailTab } from '../types/football';
-
 export function MatchDetailDialog() {
-  const { matchDialogOpen, closeMatchDialog, activeId, detailTab, setDetailTab, teamSide, setTeamSide } = useDashboard();
+  const {
+    matchDialogOpen,
+    closeMatchDialog,
+    activeId,
+    detailTab,
+    setDetailTab,
+    teamSide,
+    setTeamSide
+  } = useDashboard();
   const game = games[activeId];
   const teamId = teamSide === 'home' ? game.home : game.away;
-
   useEffect(() => {
     if (!matchDialogOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -28,35 +34,34 @@ export function MatchDetailDialog() {
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [matchDialogOpen, closeMatchDialog]);
-
-  return (
-    <AnimatePresence>
-      {matchDialogOpen &&
-      <motion.div
-        className="wm-dialog-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onMouseDown={(e) => {
-          if (e.target === e.currentTarget) closeMatchDialog();
-        }}>
+  return <AnimatePresence>
+      {matchDialogOpen && <motion.div className="wm-dialog-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4" initial={{
+      opacity: 0
+    }} animate={{
+      opacity: 1
+    }} exit={{
+      opacity: 0
+    }} onMouseDown={(e) => {
+      if (e.target === e.currentTarget) closeMatchDialog();
+    }}>
         
-          <motion.div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="match-dialog-title"
-          initial={{ opacity: 0, scale: 0.96, y: 12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 12 }}
-          transition={{ duration: 0.2 }}
-          className="wm-dialog-panel wm-scroll relative max-h-[88vh] w-full max-w-[620px] overflow-y-auto rounded-2xl border border-white/[0.15] p-6 shadow-[0_40px_120px_rgba(0,0,0,.7)]">
+          <motion.div role="dialog" aria-modal="true" aria-labelledby="match-dialog-title" initial={{
+        opacity: 0,
+        scale: 0.96,
+        y: 12
+      }} animate={{
+        opacity: 1,
+        scale: 1,
+        y: 0
+      }} exit={{
+        opacity: 0,
+        scale: 0.96,
+        y: 12
+      }} transition={{
+        duration: 0.2
+      }} className="wm-dialog-panel wm-scroll relative max-h-[88vh] w-full max-w-[620px] overflow-y-auto rounded-2xl border border-white/[0.15] p-6 shadow-[0_40px_120px_rgba(0,0,0,.7)]">
           
-            <button
-            type="button"
-            autoFocus
-            onClick={closeMatchDialog}
-            aria-label="Close match details"
-            className="absolute right-4 top-4 text-[#89938c] hover:text-wm-text">
+            <button type="button" autoFocus onClick={closeMatchDialog} aria-label="Close match details" className="absolute right-4 top-4 text-[#89938c] hover:text-wm-text">
             
               <X size={18} />
             </button>
@@ -72,10 +77,7 @@ export function MatchDetailDialog() {
                 <small className="text-[10px] text-wm-muted-2">{clubs[game.home].location}</small>
               </div>
               <div className="flex flex-col items-center gap-1 text-center">
-                <span
-                className={`rounded-md border px-2 py-0.5 text-[9px] ${
-                game.status === 'Live' ? 'border-wm-lime/[0.18] bg-wm-lime/[0.075] text-[#bff45e]' : 'border-white/10 bg-white/[0.035] text-[#9aa49d]'}`
-                }>
+                <span className={`rounded-md border px-2 py-0.5 text-[9px] ${game.status === 'Live' ? 'border-wm-lime/[0.18] bg-wm-lime/[0.075] text-[#bff45e]' : 'border-white/10 bg-white/[0.035] text-[#9aa49d]'}`}>
                 
                   {game.status === 'Live' ? `LIVE · ${game.minute}′` : 'FULL TIME'}
                 </span>
@@ -89,41 +91,22 @@ export function MatchDetailDialog() {
             </div>
 
             <div className="mt-4">
-              <ChipTabs
-              value={detailTab}
-              onChange={(v) => setDetailTab(v as DetailTab)}
-              items={[
-              ['summary', 'Summary'],
-              ['lineups', 'Lineups'],
-              ['goals', 'Goals'],
-              ['statistics', 'Statistics']]
-              } />
+              <ChipTabs value={detailTab} onChange={(v) => setDetailTab(v as DetailTab)} items={[['summary', 'Summary'], ['lineups', 'Lineups'], ['goals', 'Goals'], ['statistics', 'Statistics']]} />
             
             </div>
 
             <div className="mt-4">
-              {detailTab === 'summary' &&
-            <div className="flex flex-col gap-4">
+              {detailTab === 'summary' && <div className="flex flex-col gap-4">
                   <EventLine game={game} />
                   <StatBars game={game} />
-                </div>
-            }
-              {detailTab === 'lineups' &&
-            <div className="flex flex-col gap-4">
-                  <ChipTabs
-                value={teamSide}
-                onChange={(v) => setTeamSide(v as 'home' | 'away')}
-                items={[
-                ['home', clubs[game.home].name],
-                ['away', clubs[game.away].name]]
-                } />
+                </div>}
+              {detailTab === 'lineups' && <div className="flex flex-col gap-4">
+                  <ChipTabs value={teamSide} onChange={(v) => setTeamSide(v as 'home' | 'away')} items={[['home', clubs[game.home].name], ['away', clubs[game.away].name]]} />
               
                   <LineupPitch clubId={teamId} />
-                </div>
-            }
+                </div>}
               {detailTab === 'goals' && <EventList game={game} />}
-              {detailTab === 'statistics' &&
-            <div className="flex flex-col gap-4">
+              {detailTab === 'statistics' && <div className="flex flex-col gap-4">
                   <DataCard title="Team comparison">
                     <RadarChart possession={game.possession} />
                   </DataCard>
@@ -133,12 +116,9 @@ export function MatchDetailDialog() {
                   <DataCard title="Ball possession" wide>
                     <AreaChart home={game.possession} away={100 - game.possession} />
                   </DataCard>
-                </div>
-            }
+                </div>}
             </div>
           </motion.div>
-        </motion.div>
-      }
-    </AnimatePresence>);
-
+        </motion.div>}
+    </AnimatePresence>;
 }
